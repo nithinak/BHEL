@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RequisitionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DepartmentCode" />
+          </Key>
+          <Property Name="DepartmentCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="DepartmentName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DepartmentTable">
+          <Key>
+            <PropertyRef Name="DepartmentCode" />
+          </Key>
+          <Property Name="DepartmentCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="DepartmentName" Type="varbinary" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Designation" Type="varchar" MaxLength="50" />
+          <Property Name="Signature" Type="varbinary(max)" />
+          <Property Name="DepartmentId" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LunchType">
+          <Key>
+            <PropertyRef Name="LunchID" />
+          </Key>
+          <Property Name="LunchID" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITION\BHEL.LUNCH.REQUISITION\APP_DATA\LUNCHREQUISITION.MDF.dbo.RequisistionStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="RequisistionStatus">
+          <Key>
+            <PropertyRef Name="RequisitionID" />
+          </Key>
+          <Property Name="RequisitionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ApprovedBy" Type="varchar" MaxLength="50" />
+          <Property Name="ApprovedDate" Type="datetime" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="Requisition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Indentor" Type="varchar" MaxLength="50" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="InternalTelephoneNumber" Type="int" />
+          <Property Name="DepartmentCode" Type="varchar" MaxLength="10" />
+          <Property Name="DateOfLunch" Type="datetime" />
+          <Property Name="MenuType" Type="varchar" MaxLength="1" />
+          <Property Name="NumberOfGuest" Type="int" />
+          <Property Name="NumberOfHost" Type="int" />
+          <Property Name="GuestInfo" Type="varchar" MaxLength="100" />
+          <Property Name="HODSignature" Type="varbinary(max)" />
+          <Property Name="IndentorSignature" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusType" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_Employee_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentCode" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequisistionStatus_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="RequisistionStatus" Type="Self.RequisistionStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="RequisistionStatus">
+              <PropertyRef Name="ApprovedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequisistionStatus_Requisistion">
+          <End Role="Requisition" Type="Self.Requisition" Multiplicity="1" />
+          <End Role="RequisistionStatus" Type="Self.RequisistionStatus" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Requisition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequisistionStatus">
+              <PropertyRef Name="RequisitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="usersp_Insert_Requisition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="INDENTOR" Type="varchar" Mode="In" />
+          <Parameter Name="DATEOFENTRY" Type="datetime" Mode="In" />
+          <Parameter Name="INTERNALTELEPHONE" Type="int" Mode="In" />
+          <Parameter Name="DEPARTMENTCODE" Type="varchar" Mode="In" />
+          <Parameter Name="DATEOFLUNCH" Type="datetime" Mode="In" />
+          <Parameter Name="MENUTYPE" Type="varchar" Mode="In" />
+          <Parameter Name="NUMBEROFGUEST" Type="int" Mode="In" />
+          <Parameter Name="NUMBEROFHOST" Type="int" Mode="In" />
+          <Parameter Name="HODSIGN" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="INDENTORSIGN" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="GUESTINFO" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="RequisitionModelStoreContainer">
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DepartmentTable" EntityType="Self.DepartmentTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LunchType" EntityType="Self.LunchType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Requisition" EntityType="Self.Requisition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequisistionStatus" EntityType="Self.RequisistionStatus" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RequisistionStatus].[RequisitionID] AS [RequisitionID], 
+    [RequisistionStatus].[ApprovedBy] AS [ApprovedBy], 
+    [RequisistionStatus].[ApprovedDate] AS [ApprovedDate], 
+    [RequisistionStatus].[Status] AS [Status]
+    FROM [dbo].[RequisistionStatus] AS [RequisistionStatus]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Employee_Department" Association="Self.FK_Employee_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequisistionStatus_Employee" Association="Self.FK_RequisistionStatus_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="RequisistionStatus" EntitySet="RequisistionStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequisistionStatus_Requisistion" Association="Self.FK_RequisistionStatus_Requisistion">
+            <End Role="Requisition" EntitySet="Requisition" />
+            <End Role="RequisistionStatus" EntitySet="RequisistionStatus" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RequisitionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DepartmentCode" />
+          </Key>
+          <Property Name="DepartmentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_Department" FromRole="Department" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="DepartmentTable">
+          <Key>
+            <PropertyRef Name="DepartmentCode" />
+          </Key>
+          <Property Name="DepartmentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepartmentName" Type="Binary" MaxLength="50" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Designation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Signature" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="DepartmentId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Employee_Department" FromRole="Employee" ToRole="Department" />
+          <NavigationProperty Name="RequisistionStatus" Relationship="Self.FK_RequisistionStatus_Employee" FromRole="Employee" ToRole="RequisistionStatus" />
+        </EntityType>
+        <EntityType Name="LunchType">
+          <Key>
+            <PropertyRef Name="LunchID" />
+          </Key>
+          <Property Name="LunchID" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Requisition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Indentor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="InternalTelephoneNumber" Type="Int32" />
+          <Property Name="DepartmentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfLunch" Type="DateTime" Precision="3" />
+          <Property Name="MenuType" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="NumberOfGuest" Type="Int32" />
+          <Property Name="NumberOfHost" Type="Int32" />
+          <Property Name="GuestInfo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="HODSignature" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IndentorSignature" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="RequisistionStatu" Relationship="Self.FK_RequisistionStatus_Requisistion" FromRole="Requisition" ToRole="RequisistionStatus" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RequisistionStatu">
+          <Key>
+            <PropertyRef Name="RequisitionID" />
+          </Key>
+          <Property Name="RequisitionID" Type="Guid" Nullable="false" />
+          <Property Name="ApprovedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_RequisistionStatus_Employee" FromRole="RequisistionStatus" ToRole="Employee" />
+          <NavigationProperty Name="Requisition" Relationship="Self.FK_RequisistionStatus_Requisistion" FromRole="RequisistionStatus" ToRole="Requisition" />
+        </EntityType>
+        <Association Name="FK_Employee_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentCode" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequisistionStatus_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="RequisistionStatus" Type="Self.RequisistionStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="RequisistionStatus">
+              <PropertyRef Name="ApprovedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequisistionStatus_Requisistion">
+          <End Role="Requisition" Type="Self.Requisition" Multiplicity="1" />
+          <End Role="RequisistionStatus" Type="Self.RequisistionStatu" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Requisition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequisistionStatus">
+              <PropertyRef Name="RequisitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RequisitionEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="DepartmentTables" EntityType="Self.DepartmentTable" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="LunchTypes" EntityType="Self.LunchType" />
+          <EntitySet Name="Requisitions" EntityType="Self.Requisition" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
+          <EntitySet Name="RequisistionStatus" EntityType="Self.RequisistionStatu" />
+          <AssociationSet Name="FK_Employee_Department" Association="Self.FK_Employee_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequisistionStatus_Employee" Association="Self.FK_RequisistionStatus_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="RequisistionStatus" EntitySet="RequisistionStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequisistionStatus_Requisistion" Association="Self.FK_RequisistionStatus_Requisistion">
+            <End Role="Requisition" EntitySet="Requisitions" />
+            <End Role="RequisistionStatus" EntitySet="RequisistionStatus" />
+          </AssociationSet>
+          <FunctionImport Name="usersp_Insert_Requisition">
+            <Parameter Name="ID" Mode="In" Type="Guid" />
+            <Parameter Name="INDENTOR" Mode="In" Type="String" />
+            <Parameter Name="DATEOFENTRY" Mode="In" Type="DateTime" />
+            <Parameter Name="INTERNALTELEPHONE" Mode="In" Type="Int32" />
+            <Parameter Name="DEPARTMENTCODE" Mode="In" Type="String" />
+            <Parameter Name="DATEOFLUNCH" Mode="In" Type="DateTime" />
+            <Parameter Name="MENUTYPE" Mode="In" Type="String" />
+            <Parameter Name="NUMBEROFGUEST" Mode="In" Type="Int32" />
+            <Parameter Name="NUMBEROFHOST" Mode="In" Type="Int32" />
+            <Parameter Name="HODSIGN" Mode="In" Type="Binary" />
+            <Parameter Name="INDENTORSIGN" Mode="In" Type="Binary" />
+            <Parameter Name="GUESTINFO" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RequisitionModelStoreContainer" CdmEntityContainer="RequisitionEntities">
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="RequisitionModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DepartmentTables">
+            <EntityTypeMapping TypeName="RequisitionModel.DepartmentTable">
+              <MappingFragment StoreEntitySet="DepartmentTable">
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="RequisitionModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="Signature" ColumnName="Signature" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LunchTypes">
+            <EntityTypeMapping TypeName="RequisitionModel.LunchType">
+              <MappingFragment StoreEntitySet="LunchType">
+                <ScalarProperty Name="LunchID" ColumnName="LunchID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Requisitions">
+            <EntityTypeMapping TypeName="RequisitionModel.Requisition">
+              <MappingFragment StoreEntitySet="Requisition">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Indentor" ColumnName="Indentor" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="InternalTelephoneNumber" ColumnName="InternalTelephoneNumber" />
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="DateOfLunch" ColumnName="DateOfLunch" />
+                <ScalarProperty Name="MenuType" ColumnName="MenuType" />
+                <ScalarProperty Name="NumberOfGuest" ColumnName="NumberOfGuest" />
+                <ScalarProperty Name="NumberOfHost" ColumnName="NumberOfHost" />
+                <ScalarProperty Name="GuestInfo" ColumnName="GuestInfo" />
+                <ScalarProperty Name="HODSignature" ColumnName="HODSignature" />
+                <ScalarProperty Name="IndentorSignature" ColumnName="IndentorSignature" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="RequisitionModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StatusType" ColumnName="StatusType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequisistionStatus">
+            <EntityTypeMapping TypeName="RequisitionModel.RequisistionStatu">
+              <MappingFragment StoreEntitySet="RequisistionStatus">
+                <ScalarProperty Name="RequisitionID" ColumnName="RequisitionID" />
+                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usersp_Insert_Requisition" FunctionName="RequisitionModel.Store.usersp_Insert_Requisition" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

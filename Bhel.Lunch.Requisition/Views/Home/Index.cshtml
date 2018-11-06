@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Bhel.Lunch.Requisition.Models.Requisition>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Indentor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InternalTelephoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepartmentCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfLunch)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MenuType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfGuest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfHost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuestInfo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HODSignature)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IndentorSignature)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequisistionStatu.ApprovedBy)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Indentor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InternalTelephoneNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartmentCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfLunch)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MenuType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumberOfGuest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumberOfHost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuestInfo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HODSignature)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IndentorSignature)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequisistionStatu.ApprovedBy)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
