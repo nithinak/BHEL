@@ -10,8 +10,7 @@ namespace Bhel.Lunch.Requisition.Repository
     {
         private RequisitionEntities context = new RequisitionEntities();
         private GenericRepository<Models.Requisition> requisistionRepository;
-        private GenericRepository<Models.RequisistionStatu> requisistionStatusRepository;
-       
+        private GenericRepository<Models.Status> statusRepository;
         public void Dispose()
         {
             Dispose(true);
@@ -44,16 +43,17 @@ namespace Bhel.Lunch.Requisition.Repository
                 return requisistionRepository;
             }
         }
-        public GenericRepository<Models.RequisistionStatu> RequsistionStatusRepository
-        {
-           get
-            {
-                if (this.requisistionStatusRepository == null)
-                {
-                    this.requisistionStatusRepository = new GenericRepository<RequisistionStatu>(context);
-                }
-                return requisistionStatusRepository;
 
+        public GenericRepository<Models.Status> StatusRepository
+        {
+            get
+            {
+
+                if (this.statusRepository == null)
+                {
+                    this.statusRepository = new GenericRepository<Models.Status>(context);
+                }
+                return statusRepository;
             }
         }
         public void Save()

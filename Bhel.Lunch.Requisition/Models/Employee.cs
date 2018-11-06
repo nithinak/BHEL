@@ -14,12 +14,6 @@ namespace Bhel.Lunch.Requisition.Models
     
     public partial class Employee
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Employee()
-        {
-            this.RequisistionStatus = new HashSet<RequisistionStatu>();
-        }
-    
         public string EmployeeID { get; set; }
         public string Name { get; set; }
         public string Designation { get; set; }
@@ -27,7 +21,5 @@ namespace Bhel.Lunch.Requisition.Models
         public string DepartmentId { get; set; }
     
         public virtual Department Department { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RequisistionStatu> RequisistionStatus { get; set; }
     }
 }

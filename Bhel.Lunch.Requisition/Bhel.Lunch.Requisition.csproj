@@ -222,16 +222,10 @@
     <Compile Include="Models\Department.cs">
       <DependentUpon>RequisitionModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DepartmentTable.cs">
-      <DependentUpon>RequisitionModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Employee.cs">
       <DependentUpon>RequisitionModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LunchType.cs">
-      <DependentUpon>RequisitionModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RequisistionStatu.cs">
       <DependentUpon>RequisitionModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Requisition.cs">
@@ -373,8 +367,8 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Home\Create.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Create.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

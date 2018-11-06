@@ -26,7 +26,8 @@ namespace Bhel.Lunch.Requisition.Models
         public string GuestInfo { get; set; }
         public byte[] HODSignature { get; set; }
         public byte[] IndentorSignature { get; set; }
-    
-        public virtual RequisistionStatu RequisistionStatu { get; set; }
+        public Nullable<int> StatusCode { get; set; }
+        public string ApprovedBy { get; set; }
+        public Nullable<System.DateTime> ApprovedDate { get; set; }
     }
 }

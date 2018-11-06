@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 
 namespace Bhel.Lunch.Requisition.Repository
 {
-    public class GenericRepository<TEntity> where TEntity:class
+    public class GenericRepository<TEntity> where TEntity : class
     {
         internal RequisitionEntities context;
         internal DbSet<TEntity> dbSet;
@@ -17,16 +16,16 @@ namespace Bhel.Lunch.Requisition.Repository
             this.context = context;
             this.dbSet = context.Set<TEntity>();
         }
-        public IEnumerable<TEntity> Get(Expression<Func<TEntity,bool>> filter=null,
-                                         Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>> orderBy=null,
-                                         string includeProperties ="")
+        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null,
+                                         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+                                         string includeProperties = "")
         {
             IQueryable<TEntity> query = context.Set<TEntity>();
             if (filter == null)
             {
                 query = query.Where(filter);
             }
-            foreach (var includeProperty in includeProperties.Split
+            foreach (string includeProperty in includeProperties.Split
                 (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
@@ -52,5 +51,6 @@ namespace Bhel.Lunch.Requisition.Repository
         {
             dbSet.Add(entity);
         }
+
     }
 }

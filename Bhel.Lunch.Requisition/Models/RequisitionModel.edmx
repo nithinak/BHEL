@@ -12,13 +12,6 @@
           <Property Name="DepartmentCode" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="DepartmentName" Type="varchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="DepartmentTable">
-          <Key>
-            <PropertyRef Name="DepartmentCode" />
-          </Key>
-          <Property Name="DepartmentCode" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="DepartmentName" Type="varbinary" MaxLength="50" />
-        </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="EmployeeID" />
@@ -36,17 +29,6 @@
           <Property Name="LunchID" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITION\BHEL.LUNCH.REQUISITION\APP_DATA\LUNCHREQUISITION.MDF.dbo.RequisistionStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="RequisistionStatus">
-          <Key>
-            <PropertyRef Name="RequisitionID" />
-          </Key>
-          <Property Name="RequisitionID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ApprovedBy" Type="varchar" MaxLength="50" />
-          <Property Name="ApprovedDate" Type="datetime" />
-          <Property Name="Status" Type="int" />
-        </EntityType>
         <EntityType Name="Requisition">
           <Key>
             <PropertyRef Name="Id" />
@@ -63,6 +45,9 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
           <Property Name="GuestInfo" Type="varchar" MaxLength="100" />
           <Property Name="HODSignature" Type="varbinary(max)" />
           <Property Name="IndentorSignature" Type="varbinary(max)" />
+          <Property Name="StatusCode" Type="int" />
+          <Property Name="ApprovedBy" Type="varchar" MaxLength="50" />
+          <Property Name="ApprovedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -83,30 +68,6 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RequisistionStatus_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
-          <End Role="RequisistionStatus" Type="Self.RequisistionStatus" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="EmployeeID" />
-            </Principal>
-            <Dependent Role="RequisistionStatus">
-              <PropertyRef Name="ApprovedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RequisistionStatus_Requisistion">
-          <End Role="Requisition" Type="Self.Requisition" Multiplicity="1" />
-          <End Role="RequisistionStatus" Type="Self.RequisistionStatus" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Requisition">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RequisistionStatus">
-              <PropertyRef Name="RequisitionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Function Name="usersp_Insert_Requisition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="INDENTOR" Type="varchar" Mode="In" />
@@ -123,30 +84,13 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
         </Function>
         <EntityContainer Name="RequisitionModelStoreContainer">
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DepartmentTable" EntityType="Self.DepartmentTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LunchType" EntityType="Self.LunchType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Requisition" EntityType="Self.Requisition" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="RequisistionStatus" EntityType="Self.RequisistionStatus" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [RequisistionStatus].[RequisitionID] AS [RequisitionID], 
-    [RequisistionStatus].[ApprovedBy] AS [ApprovedBy], 
-    [RequisistionStatus].[ApprovedDate] AS [ApprovedDate], 
-    [RequisistionStatus].[Status] AS [Status]
-    FROM [dbo].[RequisistionStatus] AS [RequisistionStatus]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Employee_Department" Association="Self.FK_Employee_Department">
             <End Role="Department" EntitySet="Department" />
             <End Role="Employee" EntitySet="Employee" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RequisistionStatus_Employee" Association="Self.FK_RequisistionStatus_Employee">
-            <End Role="Employee" EntitySet="Employee" />
-            <End Role="RequisistionStatus" EntitySet="RequisistionStatus" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RequisistionStatus_Requisistion" Association="Self.FK_RequisistionStatus_Requisistion">
-            <End Role="Requisition" EntitySet="Requisition" />
-            <End Role="RequisistionStatus" EntitySet="RequisistionStatus" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -161,13 +105,6 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
           <Property Name="DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_Department" FromRole="Department" ToRole="Employee" />
         </EntityType>
-        <EntityType Name="DepartmentTable">
-          <Key>
-            <PropertyRef Name="DepartmentCode" />
-          </Key>
-          <Property Name="DepartmentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DepartmentName" Type="Binary" MaxLength="50" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="EmployeeID" />
@@ -178,7 +115,6 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
           <Property Name="Signature" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="DepartmentId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Department" Relationship="Self.FK_Employee_Department" FromRole="Employee" ToRole="Department" />
-          <NavigationProperty Name="RequisistionStatus" Relationship="Self.FK_RequisistionStatus_Employee" FromRole="Employee" ToRole="RequisistionStatus" />
         </EntityType>
         <EntityType Name="LunchType">
           <Key>
@@ -203,7 +139,9 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
           <Property Name="GuestInfo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="HODSignature" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="IndentorSignature" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="RequisistionStatu" Relationship="Self.FK_RequisistionStatus_Requisistion" FromRole="Requisition" ToRole="RequisistionStatus" />
+          <Property Name="StatusCode" Type="Int32" />
+          <Property Name="ApprovedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -211,17 +149,6 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StatusType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="RequisistionStatu">
-          <Key>
-            <PropertyRef Name="RequisitionID" />
-          </Key>
-          <Property Name="RequisitionID" Type="Guid" Nullable="false" />
-          <Property Name="ApprovedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
-          <Property Name="Status" Type="Int32" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_RequisistionStatus_Employee" FromRole="RequisistionStatus" ToRole="Employee" />
-          <NavigationProperty Name="Requisition" Relationship="Self.FK_RequisistionStatus_Requisistion" FromRole="RequisistionStatus" ToRole="Requisition" />
         </EntityType>
         <Association Name="FK_Employee_Department">
           <End Role="Department" Type="Self.Department" Multiplicity="1" />
@@ -235,49 +162,15 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RequisistionStatus_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
-          <End Role="RequisistionStatus" Type="Self.RequisistionStatu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="EmployeeID" />
-            </Principal>
-            <Dependent Role="RequisistionStatus">
-              <PropertyRef Name="ApprovedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RequisistionStatus_Requisistion">
-          <End Role="Requisition" Type="Self.Requisition" Multiplicity="1" />
-          <End Role="RequisistionStatus" Type="Self.RequisistionStatu" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Requisition">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RequisistionStatus">
-              <PropertyRef Name="RequisitionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="RequisitionEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Departments" EntityType="Self.Department" />
-          <EntitySet Name="DepartmentTables" EntityType="Self.DepartmentTable" />
           <EntitySet Name="Employees" EntityType="Self.Employee" />
           <EntitySet Name="LunchTypes" EntityType="Self.LunchType" />
           <EntitySet Name="Requisitions" EntityType="Self.Requisition" />
           <EntitySet Name="Status" EntityType="Self.Status" />
-          <EntitySet Name="RequisistionStatus" EntityType="Self.RequisistionStatu" />
           <AssociationSet Name="FK_Employee_Department" Association="Self.FK_Employee_Department">
             <End Role="Department" EntitySet="Departments" />
             <End Role="Employee" EntitySet="Employees" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RequisistionStatus_Employee" Association="Self.FK_RequisistionStatus_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="RequisistionStatus" EntitySet="RequisistionStatus" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RequisistionStatus_Requisistion" Association="Self.FK_RequisistionStatus_Requisistion">
-            <End Role="Requisition" EntitySet="Requisitions" />
-            <End Role="RequisistionStatus" EntitySet="RequisistionStatus" />
           </AssociationSet>
           <FunctionImport Name="usersp_Insert_Requisition">
             <Parameter Name="ID" Mode="In" Type="Guid" />
@@ -308,14 +201,6 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DepartmentTables">
-            <EntityTypeMapping TypeName="RequisitionModel.DepartmentTable">
-              <MappingFragment StoreEntitySet="DepartmentTable">
-                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
-                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="RequisitionModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
@@ -338,6 +223,9 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
           <EntitySetMapping Name="Requisitions">
             <EntityTypeMapping TypeName="RequisitionModel.Requisition">
               <MappingFragment StoreEntitySet="Requisition">
+                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Indentor" ColumnName="Indentor" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
@@ -358,16 +246,6 @@ warning 6002: The table/view 'C:\USERS\NITHIN\SOURCE\REPOS\BHEL.LUNCH.REQUISITIO
               <MappingFragment StoreEntitySet="Status">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatusType" ColumnName="StatusType" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RequisistionStatus">
-            <EntityTypeMapping TypeName="RequisitionModel.RequisistionStatu">
-              <MappingFragment StoreEntitySet="RequisistionStatus">
-                <ScalarProperty Name="RequisitionID" ColumnName="RequisitionID" />
-                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
-                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

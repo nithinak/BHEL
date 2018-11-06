@@ -6,15 +6,11 @@
     <edmx:Diagrams>
       <Diagram DiagramId="b9c8fe218a3241c7a2c3976d3c4924af" Name="Diagram1">
         <EntityTypeShape EntityType="RequisitionModel.Department" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="RequisitionModel.DepartmentTable" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RequisitionModel.Employee" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="RequisitionModel.LunchType" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="RequisitionModel.Requisition" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="RequisitionModel.Status" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RequisitionModel.RequisistionStatu" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="RequisitionModel.FK_Employee_Department" ManuallyRouted="false" />
-        <AssociationConnector Association="RequisitionModel.FK_RequisistionStatus_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="RequisitionModel.FK_RequisistionStatus_Requisistion" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

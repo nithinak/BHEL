@@ -28,12 +28,10 @@ namespace Bhel.Lunch.Requisition.Models
         }
     
         public virtual DbSet<Department> Departments { get; set; }
-        public virtual DbSet<DepartmentTable> DepartmentTables { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<LunchType> LunchTypes { get; set; }
         public virtual DbSet<Requisition> Requisitions { get; set; }
         public virtual DbSet<Status> Status { get; set; }
-        public virtual DbSet<RequisistionStatu> RequisistionStatus { get; set; }
     
         public virtual int usersp_Insert_Requisition(Nullable<System.Guid> iD, string iNDENTOR, Nullable<System.DateTime> dATEOFENTRY, Nullable<int> iNTERNALTELEPHONE, string dEPARTMENTCODE, Nullable<System.DateTime> dATEOFLUNCH, string mENUTYPE, Nullable<int> nUMBEROFGUEST, Nullable<int> nUMBEROFHOST, byte[] hODSIGN, byte[] iNDENTORSIGN, string gUESTINFO)
         {
@@ -87,7 +85,5 @@ namespace Bhel.Lunch.Requisition.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usersp_Insert_Requisition", iDParameter, iNDENTORParameter, dATEOFENTRYParameter, iNTERNALTELEPHONEParameter, dEPARTMENTCODEParameter, dATEOFLUNCHParameter, mENUTYPEParameter, nUMBEROFGUESTParameter, nUMBEROFHOSTParameter, hODSIGNParameter, iNDENTORSIGNParameter, gUESTINFOParameter);
         }
-
-        public System.Data.Entity.DbSet<Bhel.Lunch.Requisition.ViewModel.Requsition> Requsitions { get; set; }
     }
 }

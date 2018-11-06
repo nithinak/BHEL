@@ -1,6 +1,6 @@
-﻿using Bhel.Lunch.Requisition.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Mvc;
 
@@ -8,55 +8,56 @@ namespace Bhel.Lunch.Requisition.Controllers
 {
     public class HomeController : Controller
     {
-     
+        
         [HttpGet]
         public ActionResult Index()
         {
-            
-            IEnumerable<Models.Requisition> requisitionDetails = null;
-            using (var Clinet = new HttpClient())
+
+            IEnumerable<ViewModel.Requsition> requisitionDetails = null;
+            using (HttpClient Clinet = new HttpClient())
             {
                 Clinet.BaseAddress = new Uri("http://localhost:51821/api/");
                 //HTTP GET
-                var responseTask = Clinet.GetAsync("Requisition");
+                System.Threading.Tasks.Task<HttpResponseMessage> responseTask = Clinet.GetAsync("Requisition");
                 responseTask.Wait();
 
-                var result = responseTask.Result;
+                HttpResponseMessage result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<IList<Models.Requisition>>();
+                    System.Threading.Tasks.Task<IList<ViewModel.Requsition>> readTask = result.Content.ReadAsAsync<IList<ViewModel.Requsition>>();
                     readTask.Wait();
-
                     requisitionDetails = readTask.Result;
+                }
+                else
+                {
+                    //log response status here..
+
+                    requisitionDetails = Enumerable.Empty<ViewModel.Requsition>();
+
+                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
                 }
             }
 
             return View(requisitionDetails);
-            
+
         }
         public ActionResult Create()
         {
+
             return View();
         }
         [HttpPost]
-        public ActionResult Create(Models.Requisition requisition)
+        public ActionResult Create(ViewModel.Requsition requisition)
         {
 
             requisition.Id = Guid.NewGuid();
-           
-            RequisistionStatu requisistionStatu = new RequisistionStatu()
-            {
-                RequisitionID = requisition.Id,
-                Status = 101,
-
-            };
-            requisition.RequisistionStatu = requisistionStatu;
+          
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("http://localhost:51821/api/");
 
                 //HTTP POST
-                System.Threading.Tasks.Task<HttpResponseMessage> postTask = client.PostAsJsonAsync<Models.Requisition>("requisition", requisition);
+                System.Threading.Tasks.Task<HttpResponseMessage> postTask = client.PostAsJsonAsync("requisition", requisition);
                 postTask.Wait();
 
                 HttpResponseMessage result = postTask.Result;

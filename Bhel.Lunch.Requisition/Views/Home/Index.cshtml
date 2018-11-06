@@ -10,73 +10,84 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Indentor)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InternalTelephoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DepartmentCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateOfLunch)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MenuType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NumberOfGuest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NumberOfHost)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GuestInfo)
-        </th>
-        <th></th>
-    </tr>
+<div class="container-fluid">
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Indentor)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InternalTelephoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DepartmentCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateOfLunch)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MenuType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumberOfGuest)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumberOfHost)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuestInfo)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
 
-</table>
+    <table class="container-fluid table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Indentor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InternalTelephoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartmentCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfLunch)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfGuest)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfHost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GuestInfo)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Indentor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InternalTelephoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartmentCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfLunch)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MenuType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfGuest)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfHost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GuestInfo)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+        }
+
+   </table>
+</div>

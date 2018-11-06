@@ -1,9 +1,6 @@
 ﻿using Bhel.Lunch.Requisition.Repository;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace Bhel.Lunch.Requisition.Controllers
@@ -18,8 +15,9 @@ namespace Bhel.Lunch.Requisition.Controllers
         [HttpGet]
         public IHttpActionResult GetRequisition()
         {
-            var requisitionDetails = unitOfWork.RequsistionRepository.Get().ToList();
-            if (requisitionDetails.Count==0)
+            List<Models.Requisition> requisitionDetails = unitOfWork.RequsistionRepository.Get().ToList();
+
+            if (requisitionDetails.Count == 0)
             {
                 return NotFound();
             }
@@ -27,7 +25,40 @@ namespace Bhel.Lunch.Requisition.Controllers
             {
                 return Ok(requisitionDetails);
             }
-           
+
+        }
+        [HttpPost]
+        public IHttpActionResult CreateNewRequisition([FromBody] ViewModel.Requsition requisition)
+        {
+
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data");
+            }
+            else
+            {
+                Models.Requisition RequisitionsDetails = new Models.Requisition()
+                {
+                    Id = requisition.Id,
+                    Indentor = requisition.Indentor,
+                    IndentorSignature = requisition.IndentorSignature,
+                    MenuType = requisition.MenuType,
+                    Date = requisition.Date,
+                    DateOfLunch = requisition.DateOfLunch,
+                    GuestInfo = requisition.GuestInfo,
+                    DepartmentCode = requisition.DepartmentCode,
+                    InternalTelephoneNumber = requisition.InternalTelephoneNumber,
+                    NumberOfGuest = requisition.NumberOfGuest,
+                    NumberOfHost = requisition.NumberOfHost,
+                    StatusCode = unitOfWork.StatusRepository.GetByID(101).Id,
+
+                };
+
+                unitOfWork.RequsistionRepository.Insert(RequisitionsDetails);
+                unitOfWork.Save();
+            }
+            return Ok();
         }
     }
 }
