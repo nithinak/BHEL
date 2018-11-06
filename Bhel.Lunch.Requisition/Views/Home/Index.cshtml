@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Bhel.Lunch.Requisition.Models.Requisition>
+﻿@model IEnumerable<Bhel.Lunch.Requisition.ViewModel.Requsition>
 
 @{
     ViewBag.Title = "Index";
@@ -39,15 +39,6 @@
         <th>
             @Html.DisplayNameFor(model => model.GuestInfo)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HODSignature)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IndentorSignature)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RequisistionStatu.ApprovedBy)
-        </th>
         <th></th>
     </tr>
 
@@ -81,18 +72,9 @@
             @Html.DisplayFor(modelItem => item.GuestInfo)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.HODSignature)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IndentorSignature)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RequisistionStatu.ApprovedBy)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
         </td>
     </tr>
 }

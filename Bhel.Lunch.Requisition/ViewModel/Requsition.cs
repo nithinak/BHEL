@@ -7,7 +7,7 @@ namespace Bhel.Lunch.Requisition.ViewModel
 {
     public class Requsition
     {
-        public System.Guid Id { get; set; }
+        //public System.Guid Id { get; set; }
         public string Indentor { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<int> InternalTelephoneNumber { get; set; }

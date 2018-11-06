@@ -10,48 +10,24 @@ namespace Bhel.Lunch.Requisition.Controllers
 {
     public class RequisitionController : ApiController
     {
-        private UnitOfWork UnitOfWork = new UnitOfWork(); 
-        // GET: api/Requisition
+        private UnitOfWork unitOfWork = new UnitOfWork();
+        public RequisitionController()
+        {
+
+        }
         [HttpGet]
-        public IHttpActionResult Get()
+        public IHttpActionResult GetRequisition()
         {
-            var Requsistion = UnitOfWork.RequsistionRepository.Get().ToList();
-            return Ok(Requsistion);
-        }
-
-        // GET: api/Requisition/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Requisition
-        public IHttpActionResult Post([FromBody]Models.Requisition requisition)
-        {
-            if (!ModelState.IsValid)
+            var requisitionDetails = unitOfWork.RequsistionRepository.Get().ToList();
+            if (requisitionDetails.Count==0)
             {
-                return BadRequest("Invalid Data");
+                return NotFound();
             }
-               
             else
             {
-               
-                UnitOfWork.RequsistionRepository.Insert(requisition);
-               
-                UnitOfWork.Save();
-                return Ok();
+                return Ok(requisitionDetails);
             }
-          
-        }
-
-        // PUT: api/Requisition/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/Requisition/5
-        public void Delete(int id)
-        {
+           
         }
     }
 }

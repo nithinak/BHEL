@@ -8,7 +8,7 @@ namespace Bhel.Lunch.Requisition.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly string Url = "http://localhost:51821/api/";
+     
         [HttpGet]
         public ActionResult Index()
         {
@@ -16,9 +16,9 @@ namespace Bhel.Lunch.Requisition.Controllers
             IEnumerable<Models.Requisition> requisitionDetails = null;
             using (var Clinet = new HttpClient())
             {
-                Clinet.BaseAddress = new Uri(Url);
+                Clinet.BaseAddress = new Uri("http://localhost:51821/api/");
                 //HTTP GET
-                var responseTask = Clinet.GetAsync("Requsistion");
+                var responseTask = Clinet.GetAsync("Requisition");
                 responseTask.Wait();
 
                 var result = responseTask.Result;
@@ -53,7 +53,7 @@ namespace Bhel.Lunch.Requisition.Controllers
             requisition.RequisistionStatu = requisistionStatu;
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Url);
+                client.BaseAddress = new Uri("http://localhost:51821/api/");
 
                 //HTTP POST
                 System.Threading.Tasks.Task<HttpResponseMessage> postTask = client.PostAsJsonAsync<Models.Requisition>("requisition", requisition);
